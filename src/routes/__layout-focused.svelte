@@ -1,9 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/env';
 
-  import Footer from '$lib/layout/footer.svelte';
-  import Header from '$lib/layout/header.svelte';
-
   import '$lib/config';
   import '../app.scss';
 
@@ -12,6 +9,4 @@
   }
 </script>
 
-<Header />
 <slot />
-<Footer />

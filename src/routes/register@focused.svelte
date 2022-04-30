@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Login from '$lib/views/login.svelte';
+	import Register from '$lib/views/register.svelte';
 </script>
 
 <svelte:head>
@@ -7,4 +7,4 @@
 	<meta name="description" content="Svelte todo sample app" />
 </svelte:head>
 
-<Login />
+<Register />

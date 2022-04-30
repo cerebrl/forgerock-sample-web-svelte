@@ -1,5 +1,7 @@
 <script lang='ts'>
   import { theme } from '$lib/global-state';
+  import apiRequest from '$lib/utilities/request';
+
   import type { Todo } from './interface';
 
   export let addTodo: (todo: Todo) => void;
@@ -20,7 +22,7 @@
   class={`p-3 d-flex ${$theme.textClass}`}
   action="https://api.example.com:8443/todos"
   method="POST"
-  on:submit={createTodo}
+  on:submit|preventDefault={createTodo}
   >
   <div class="cstm_todos-input cstm_form-floating form-floating flex-grow-1">
     <input

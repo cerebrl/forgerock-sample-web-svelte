@@ -31,7 +31,7 @@
           data-bs-toggle="modal"
           data-bs-target="#deleteModal"
           class="btn btn-danger"
-          onClick={deleteTodo}
+          on:click={deleteTodo}
         >
           Delete Todo
         </button>

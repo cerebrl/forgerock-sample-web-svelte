@@ -2,7 +2,7 @@
   import { theme } from '$lib/global-state';
   import TodoIcon from '$lib/components/icons/todo-icon.svelte';
 
-  import ActionIcon from '$lib/components/icons/account-icon.svelte';
+  import ActionIcon from '$lib/components/icons/action-icon.svelte';
   import type { Todo } from './interface';
 
   export let completeTodo: (_id: string, completed: boolean) => void;
@@ -10,9 +10,13 @@
   export let setSelectedEditTodo: (todo: Todo) => void;
   export let todo: Todo;
 
-  const todoClasses = `cstm_todo-label ${
-    todo.completed ? 'cstm_todo-label_complete' : 'cstm_todo-label_incomplete'
-  } ${'col d-flex align-items-center fs-5 w-100 p-3'}`;
+  let todoClasses = '';
+
+  $: {
+    todoClasses = `cstm_todo-label ${
+      todo.completed ? 'cstm_todo-label_complete' : 'cstm_todo-label_incomplete'
+    } ${'col d-flex align-items-center fs-5 w-100 p-3'}`;
+  }
 </script>
 
 <li

@@ -1,20 +1,37 @@
 <script lang="ts">
+  import { browser } from '$app/env';
+  import { goto } from '$app/navigation';
   import { writable, type Writable } from 'svelte/store';
 
   import CreateTodo from '$lib/components/todos/create.svelte';
   import DeleteModal from '$lib/components/todos/delete.svelte';
   import EditModal from '$lib/components/todos/edit.svelte';
-  import { theme } from '$lib/global-state';
+  import { isAuthenticated, theme } from '$lib/global-state';
   import reducer from '$lib/components/todos/reducer';
   import apiRequest from '$lib/utilities/request';
   import Todo from '$lib/components/todos/todo.svelte';
 
   import type { Todo as TodoInterface } from '$lib/components/todos/interface';
 
+
   const todos: Writable<TodoInterface[]> = writable([]);
   const selectedDeleteTodo: Writable<TodoInterface | null> = writable(null);
   const selectedEditTodo: Writable<TodoInterface | null> = writable(null);
   let hasFetched = false;
+
+  if (browser) {
+    (async function fetchTodos() {
+      const fetchedTodos: TodoInterface[] = await apiRequest('todos');
+      hasFetched = true;
+      todos.set([ ...$todos, ...fetchedTodos ]);
+    })();
+  }
+
+  $: {
+    if (browser && !$isAuthenticated) {
+      goto('/');
+    }
+  }
 
   function addTodo(newTodo: TodoInterface) {
     todos.set(reducer($todos, { type: 'add-todo', payload: { todo: newTodo } }));
@@ -60,14 +77,14 @@
               </p>
             </div>
           </li>
-        {/if}}
+        {/if}
       </ul>
     {:else}
       <p
         class={`d-flex justify-content-center align-items-center border-top px-3 ${$theme.borderClass}`}
       >
         <span class="spinner-border text-primary my-2" role="status" />
-        <span class="p-3 fs-5">Collecting your todos ...</span>
+        <span class="p-3 fs-5 text-muted">Collecting your todos ...</span>
       </p>
     {/if}
   </div>

@@ -10,6 +10,7 @@
 
 import { HttpClient } from '@forgerock/javascript-sdk';
 
+import { email, isAuthenticated, username } from '$lib/global-state';
 import { API_URL } from '$lib/constants';
 
 /**
@@ -19,7 +20,7 @@ import { API_URL } from '$lib/constants';
  * @param {string} data - the data to POST against the API server
  * @return {Promise<Object>} - JSON response from API
  */
-export default async function apiRequest(resource: string, method: string, data?: any) {
+export default async function apiRequest(resource: string, method?: string, data?: any) {
   let json: any;
   try {
     /** ***********************************************************************
@@ -48,6 +49,10 @@ export default async function apiRequest(resource: string, method: string, data?
     json = await response.json();
   } catch (err: any) {
     console.error(`Error: API request; ${err}`);
+
+    email.set('');
+    isAuthenticated.set(false);
+    username.set('')
 
     json = {
       error: err?.message

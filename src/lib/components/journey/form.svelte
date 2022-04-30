@@ -1,10 +1,10 @@
 <script lang="ts">
   import { browser } from '$app/env';
-import { goto } from '$app/navigation';
+  import { goto } from '$app/navigation';
 
   import Button from './button.svelte';
-  import { email, isAuthenticated, theme, username } from '../../global-state';
-  import { getStep, step, user } from './journey-state';
+  import { isAuthenticated, theme } from '../../global-state';
+  import { getStep, step } from './journey-state';
   import Password from './password.svelte';
   import Text from './text.svelte';
   import treeReducer from './tree-reducer';
@@ -19,11 +19,8 @@ import { goto } from '$app/navigation';
   }
 
   $: {
-    if ($user?.name) {
-      email.set($user.email);
-      isAuthenticated.set(true);
+    if ($isAuthenticated) {
       step.set(null);
-      username.set($user.name);
 
       goto('/');
     }
@@ -33,7 +30,7 @@ import { goto } from '$app/navigation';
 <h1 class={`text-center fs-2 mb-3 ${$theme.textClass}`}>
   {form.titleText}
 </h1>
-<slot topMessage='topMessage' />
+<slot name='topMessage' />
 <form
   class="cstm_form"
   on:submit|preventDefault={getStep}

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { PasswordCallback } from '@forgerock/javascript-sdk';
+  import type { ValidatedCreatePasswordCallback } from '@forgerock/javascript-sdk';
   import EyeIcon from '$lib/components/icons/eye-icon.svelte';
   import { theme } from '$lib/global-state';
 
-  export let callback: PasswordCallback;
+  export let callback: ValidatedCreatePasswordCallback;
   export let inputName = '';
 
   const failedPolicies = callback.getFailedPolicies && callback.getFailedPolicies();
@@ -15,15 +15,25 @@
   let validationClass = '';
   let validationFailure: string;
 
+  /**
+   * @function setValue - Sets the value on the callback on element blur (lose focus)
+   * @param {Object} event
+   */
   function setValue(event: Event) {
     callback.setPassword((event.target as HTMLInputElement).value);
   }
+  /**
+   * @function toggleVisibility - toggles the password from masked to plaintext
+   */
   function toggleVisibility() {
     isVisible = !isVisible;
   }
-  if (failedPolicies && failedPolicies.length) {
-    console.log(failedPolicies);
-    validationFailure = failedPolicies.reduce((prev: string, curr): string => {
+
+  if (failedPolicies?.length) {
+    /**
+     * Iterate over the failed policies producing a single string to render
+     */
+    validationFailure = failedPolicies.reduce((prev, curr) => {
       console.log(curr);
       let failureObj;
       try {
@@ -47,8 +57,13 @@
     validationClass = 'is-invalid';
   }
 
-  if (policies) {
-    isRequired = policies.includes('REQUIRED');
+  /**
+   * Determine if the input is required
+   */
+  if (policies?.policyRequirements) {
+    isRequired = policies.policyRequirements.includes('REQUIRED');
+  } else if (callback.isRequired) {
+    isRequired = callback.isRequired();
   }
 </script>
 

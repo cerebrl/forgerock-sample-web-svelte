@@ -9,6 +9,7 @@
   disabled={submittingForm}
 >
 {#if submittingForm}
+    <!-- Render a small spinner during form submission -->
     <span
       class="spinner-border spinner-border-sm"
       role="status"

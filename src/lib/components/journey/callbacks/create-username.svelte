@@ -15,7 +15,18 @@
   let validationClass = '';
   let validationFailure: string;
 
+  /**
+   * @function setValue - Sets the value on the callback on element blur (lose focus)
+   * @param {Object} event
+   */
+  function setValue(event: any) {
+    callback.setInputValue(event.target.value);
+  }
+
   if (failedPolicies?.length) {
+    /**
+     * Iterate over the failed policies producing a single string to render
+     */
     validationFailure = failedPolicies.reduce((prev, curr) => {
       let failureObj;
       try {
@@ -42,10 +53,6 @@
     } else if (callback.isRequired) {
       isRequired = callback.isRequired();
     }
-  }
-
-  function setValue(event: any) {
-    callback.setInputValue(event.target.value);
   }
 </script>
 

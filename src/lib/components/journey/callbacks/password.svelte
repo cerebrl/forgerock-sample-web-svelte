@@ -1,11 +1,18 @@
 <script lang="ts">
-  import type { ValidatedCreatePasswordCallback } from '@forgerock/javascript-sdk';
+  import type { PasswordCallback } from '@forgerock/javascript-sdk';
   import EyeIcon from '$lib/components/icons/eye-icon.svelte';
   import { theme } from '$lib/global-state';
 
-  export let callback: ValidatedCreatePasswordCallback;
+  export let callback: PasswordCallback;
   export let inputName = '';
 
+  /** *************************************************************************
+   * SDK INTEGRATION POINT
+   * Summary: SDK callback methods for getting values
+   * --------------------------------------------------------------------------
+   * Details: Each callback is wrapped by the SDK to provide helper methods
+   * for accessing values from the callbacks received from AM
+   ************************************************************************* */
   const failedPolicies = callback.getFailedPolicies && callback.getFailedPolicies();
   const policies = callback.getPolicies && callback.getPolicies();
   const passwordLabel = callback.getPrompt();
@@ -15,15 +22,31 @@
   let validationClass = '';
   let validationFailure: string;
 
+  /**
+   * @function setValue - Sets the value on the callback on element blur (lose focus)
+   * @param {Object} event
+   */
   function setValue(event: Event) {
+    /** ***********************************************************************
+     * SDK INTEGRATION POINT
+     * Summary: SDK callback methods for setting values
+     * ------------------------------------------------------------------------
+     * Details: Each callback is wrapped by the SDK to provide helper methods
+     * for writing values to the callbacks received from AM
+     *********************************************************************** */
     callback.setPassword((event.target as HTMLInputElement).value);
   }
+  /**
+   * @function toggleVisibility - toggles the password from masked to plaintext
+   */
   function toggleVisibility() {
     isVisible = !isVisible;
   }
-  if (failedPolicies?.length) {
-    console.log(failedPolicies);
-    validationFailure = failedPolicies.reduce((prev, curr) => {
+  if (failedPolicies && failedPolicies.length) {
+    /**
+     * Iterate over the failed policies producing a single string to render
+     */
+    validationFailure = failedPolicies.reduce((prev: string, curr): string => {
       console.log(curr);
       let failureObj;
       try {
@@ -47,10 +70,8 @@
     validationClass = 'is-invalid';
   }
 
-  if (policies?.policyRequirements) {
-    isRequired = policies.policyRequirements.includes('REQUIRED');
-  } else if (callback.isRequired) {
-    isRequired = callback.isRequired();
+  if (policies) {
+    isRequired = policies.includes('REQUIRED');
   }
 </script>
 

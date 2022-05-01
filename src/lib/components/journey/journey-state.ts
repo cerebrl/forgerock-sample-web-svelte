@@ -74,10 +74,12 @@ export async function initTree(tree: string) {
 
     if (nextStep.type === StepType.Step) {
       step.set(nextStep);
+      submittingForm.set(false);
     } else if (nextStep.type === StepType.LoginSuccess) {
       // User is authenticated, now call for OAuth tokens
       getOAuth();
-      step.set(nextStep)
+      step.set(nextStep);
+      submittingForm.set(false);
     } else if (nextStep.type === StepType.LoginFailure) {
       /**
        * Grab failure message, which may contain encoded HTML
@@ -121,11 +123,13 @@ export async function initTree(tree: string) {
       }
       failureMessage.set(failureMessageStr);
       step.set(restartStep);
+      submittingForm.set(false);
     }
   }
 
   const step: Writable<StepTypes> = writable(null);
   const failureMessage: Writable<string | null> = writable(null);
+  const submittingForm: Writable<boolean> = writable(false);
   let initialStep: StepTypes;
 
   try {
@@ -150,5 +154,6 @@ export async function initTree(tree: string) {
     step,
     getStep,
     failureMessage,
+    submittingForm,
   };
 }

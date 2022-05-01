@@ -20,6 +20,10 @@
   const inputArr = callback?.payload?.input;
   const inputNameAnswer = Array.isArray(inputArr) && inputArr[1].name;
 
+  /**
+   * @function setAnswer - Sets the value on the callback on element blur (lose focus)
+   * @param {Object} event
+   */
   function setAnswer(event: Event) {
     /** ***********************************************************************
      * SDK INTEGRATION POINT
@@ -31,6 +35,10 @@
     callback.setAnswer((event.target as HTMLSelectElement).value);
   }
 
+  /**
+   * @function setQuestion - Sets the value on the callback on element blur (lose focus)
+   * @param {Object} event
+   */
   function setQuestion(event: Event) {
     /** ***********************************************************************
      * SDK INTEGRATION POINT

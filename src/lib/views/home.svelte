@@ -1,9 +1,21 @@
 <script lang='ts'>
-  import { theme } from '../global-state';
+  import { isAuthenticated, theme, username } from '../global-state';
+  import VerifiedIcon from '$lib/components/icons/verified-icon.svelte';
 </script>
 
 <div class={`cstm_container container-fluid ${$theme.textClass}`}>
-	<!-- {LoginAlert} -->
+	{#if $isAuthenticated}
+    <p class="alert alert-success d-flex align-items-center mt-5" role="alert">
+      <VerifiedIcon classes="cstm_verified-alert-icon" size="36px" />
+      <span class="ps-2">
+        Welcome back, {$username}!{' '}
+        <a class="cstm_verified-alert-link" href="/todos">
+          Manage your todos here
+        </a>
+        .
+      </span>
+    </p>
+  {/if}
 	<h1 class={`cstm_head-text text-center ${$theme.textClass}`}>
 		Protect with ForgeRock; Develop with SvelteKit
 	</h1>
@@ -42,5 +54,11 @@
 			you can find our official SDK documentation here.
 		</a>
 	</p>
-	<!-- {createAccountText} -->
+	{#if !$isAuthenticated}
+    <h2 class={`fs-4 fw-normal pt-3 pb-1 ${$theme.textClass}`}>Getting started</h2>
+    <p>
+      To use this app, <a href="/register">create an account now</a>! Already have an account?{' '}
+      <a href="/login">Sign in</a> to get things done!
+    </p>
+  {/if}
 </div>

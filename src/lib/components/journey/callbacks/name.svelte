@@ -1,8 +1,10 @@
 <script lang="ts">
-  import type { TermsAndConditionsCallback } from '@forgerock/javascript-sdk';
+  import type { NameCallback } from '@forgerock/javascript-sdk';
 
-  export let callback: TermsAndConditionsCallback;
-  export let inputName: string;
+  import { theme } from '$lib/global-state';
+
+  export let callback: NameCallback;
+  export let inputName = '';
 
   /** *************************************************************************
    * SDK INTEGRATION POINT
@@ -11,10 +13,16 @@
    * Details: Each callback is wrapped by the SDK to provide helper methods
    * for accessing values from the callbacks received from AM
    ************************************************************************* */
-  const terms = callback.getTerms();
-  const termsStart = terms.substring(0, 35) + ' ...';
+  const existingValue = callback.getInputValue();
+  const textInputLabel = callback.getPrompt();
 
-  function setValue(event: Event) {
+  let validationClass = '';
+
+  /**
+   * @function setValue - Sets the value on the callback on element blur (lose focus)
+   * @param {Object} event
+   */
+  function setValue(event: any) {
     /** ***********************************************************************
      * SDK INTEGRATION POINT
      * Summary: SDK callback methods for setting values
@@ -22,23 +30,20 @@
      * Details: Each callback is wrapped by the SDK to provide helper methods
      * for writing values to the callbacks received from AM
      *********************************************************************** */
-    callback.setAccepted((event.target as HTMLInputElement).checked);
+    callback.setInputValue(event.target.value);
   }
 </script>
 
-<div class="form-check mb-4">
+<div class={`cstm_form-floating form-floating mb-3`}>
   <input
-    class="form-check-input"
-    checked={false}
+    class={`cstm_form-control form-control ${validationClass} bg-transparent ${$theme.textClass} ${$theme.borderClass}`}
+    value={existingValue}
     id={inputName}
+    name={inputName}
     on:change={setValue}
-    type="checkbox"
+    placeholder={textInputLabel}
+    required={true}
+    type="text"
   />
-  <label for={inputName} class="form-check-label">
-    Please accept our below Terms and Conditions
-    <details>
-      <summary class="fw-bold ps-1">{termsStart}</summary>
-      {terms}
-    </details>
-  </label>
+  <label for={inputName}>{textInputLabel}</label>
 </div>

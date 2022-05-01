@@ -31,7 +31,7 @@
     class="form-check-input"
     checked={false}
     id={inputName}
-    onChange={setValue}
+    on:change={setValue}
     type="checkbox"
   />
   <label for={inputName} class="form-check-label">

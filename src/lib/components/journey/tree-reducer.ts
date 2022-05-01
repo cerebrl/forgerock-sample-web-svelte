@@ -10,6 +10,13 @@
 
 import { JOURNEY_LOGIN, JOURNEY_REGISTER } from '../../constants';
 
+export interface FormMetadata {
+  action: string;
+  buttonText: string;
+  titleText: string;
+  tree: string;
+}
+
 /**
  * @function treeReducer - A simple "reducer" function for a tree's metadata based on the action type
  * @param {Object} _ - Normally the current state, but it's not being used
@@ -17,16 +24,18 @@ import { JOURNEY_LOGIN, JOURNEY_REGISTER } from '../../constants';
  * @param {string} action.type - Action type that describes what to do
  * @returns {Object} - the tree's metadata
  */
-export default function treeReducer(action: { type: string }) {
+export default function treeReducer(action: { type: string }): FormMetadata {
   switch (action.type) {
     case 'login':
       return {
+        action: action.type,
         buttonText: 'Sign In',
         titleText: 'Sign In',
         tree: JOURNEY_LOGIN,
       };
     case 'register':
       return {
+        action: action.type,
         buttonText: 'Register',
         titleText: 'Sign Up',
         tree: JOURNEY_REGISTER,

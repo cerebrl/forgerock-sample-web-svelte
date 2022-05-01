@@ -56,7 +56,7 @@
     class={`cstm_form-select form-select bg-transparent ${$theme.textClass} ${$theme.borderClass}`}
     id={inputNameQuestion}
     name={inputNameQuestion}
-    onChange={setQuestion}
+    on:change={setQuestion}
     required={true}
   >
     <option value="">No selection</option>
@@ -78,7 +78,7 @@
     class={`cstm_form-control form-control bg-transparent ${$theme.textClass} ${$theme.borderClass}`}
     id={inputNameAnswer || 'kba-answer-id'}
     name={inputNameAnswer || 'kba-answer-name'}
-    onChange={setAnswer}
+    on:change={setAnswer}
     placeholder="Security Answer"
     required={true}
     type="text"

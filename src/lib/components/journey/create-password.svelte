@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { PasswordCallback } from '@forgerock/javascript-sdk';
+  import type { ValidatedCreatePasswordCallback } from '@forgerock/javascript-sdk';
   import EyeIcon from '$lib/components/icons/eye-icon.svelte';
   import { theme } from '$lib/global-state';
 
-  export let callback: PasswordCallback;
+  export let callback: ValidatedCreatePasswordCallback;
   export let inputName = '';
 
   const failedPolicies = callback.getFailedPolicies && callback.getFailedPolicies();
@@ -21,9 +21,9 @@
   function toggleVisibility() {
     isVisible = !isVisible;
   }
-  if (failedPolicies && failedPolicies.length) {
+  if (failedPolicies?.length) {
     console.log(failedPolicies);
-    validationFailure = failedPolicies.reduce((prev: string, curr): string => {
+    validationFailure = failedPolicies.reduce((prev, curr) => {
       console.log(curr);
       let failureObj;
       try {
@@ -47,8 +47,10 @@
     validationClass = 'is-invalid';
   }
 
-  if (policies) {
-    isRequired = policies.includes('REQUIRED');
+  if (policies?.policyRequirements) {
+    isRequired = policies.policyRequirements.includes('REQUIRED');
+  } else if (callback.isRequired) {
+    isRequired = callback.isRequired();
   }
 </script>
 

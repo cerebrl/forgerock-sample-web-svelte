@@ -1,33 +1,14 @@
 <script lang="ts">
-  import {
-    AttributeInputCallback,
-    type NameCallback,
-    type PolicyRequirement
-  } from '@forgerock/javascript-sdk';
+  import type { NameCallback } from '@forgerock/javascript-sdk';
 
   import { theme } from '$lib/global-state';
 
-  interface StringDictionary<T> {
-    [name: string]: T;
-  }
-
-  export let callback: AttributeInputCallback<string> | NameCallback;
+  export let callback: NameCallback;
   export let inputName = '';
 
   const existingValue = callback.getInputValue();
   const textInputLabel = callback.getPrompt();
 
-  let failedPolicies: PolicyRequirement[];
-  let policies: StringDictionary<any>;
-  let stringAttributeName: string;
-
-  if (callback instanceof AttributeInputCallback) {
-    failedPolicies = callback.getFailedPolicies && callback.getFailedPolicies();
-    policies = callback.getPolicies && callback.getPolicies();
-    stringAttributeName = callback.getName && callback.getName();
-  }
-
-  let isRequired = false;
   let validationClass = '';
 
   function setValue(event: any) {
@@ -43,9 +24,8 @@
     name={inputName}
     on:change={setValue}
     placeholder={textInputLabel}
-    required={isRequired}
-    type={stringAttributeName == 'mail' ? 'email' : 'text'}
+    required={true}
+    type="text"
   />
   <label for={inputName}>{textInputLabel}</label>
-  <!-- <Validation /> -->
 </div>

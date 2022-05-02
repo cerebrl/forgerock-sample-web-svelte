@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { isAuthenticated, theme, username } from '../global-state';
+  import { isAuthenticated, theme, username } from '$lib/global-state';
   import VerifiedIcon from '$lib/components/icons/verified-icon.svelte';
 </script>
 

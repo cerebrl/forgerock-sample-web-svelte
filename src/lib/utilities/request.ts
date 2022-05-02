@@ -48,7 +48,7 @@ export default async function apiRequest(resource: string, method?: string, data
     }
     json = await response.json();
   } catch (err: any) {
-    console.error(`Error: API request; ${err}`);
+    console.error(`API request | ${err}`);
 
     email.set('');
     isAuthenticated.set(false);

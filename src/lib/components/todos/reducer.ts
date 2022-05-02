@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-  import type { Todo } from '$lib/components/todos/interface';
+  import type { Todo } from '$todos/interface';
 
 /**
  * @function reducer - A simple reducer for managing the state of todos

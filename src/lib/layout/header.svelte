@@ -1,11 +1,11 @@
 <script lang="ts">
-  import ForgeRockIcon from '$lib/components/icons/forgerock-icon.svelte';
-  import SvelteIcon from '$lib/components/icons/svelte-icon.svelte';
+  import ForgeRockIcon from '$icons/forgerock-icon.svelte';
+  import SvelteIcon from '$icons/svelte-icon.svelte';
 
-  import { isAuthenticated, theme } from '../global-state';
-  import AccountItemIn from './account-item-in.svelte';
-  import AccountItemOut from './account-item-out.svelte';
-  import TodosItemIn from './todos-item-in.svelte';
+  import { isAuthenticated, theme } from '$lib/global-state';
+  import AccountItemIn from '$lib/layout/account-item-in.svelte';
+  import AccountItemOut from '$lib/layout/account-item-out.svelte';
+  import TodosItemIn from '$lib/layout/todos-item-in.svelte';
 </script>
 
 <nav

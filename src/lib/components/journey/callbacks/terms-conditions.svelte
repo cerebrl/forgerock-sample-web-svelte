@@ -2,7 +2,7 @@
   import type { TermsAndConditionsCallback } from '@forgerock/javascript-sdk';
 
   export let callback: TermsAndConditionsCallback;
-  export let inputName: string;
+  export let inputName = '';
 
   /** *************************************************************************
    * SDK INTEGRATION POINT

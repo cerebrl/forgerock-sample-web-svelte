@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { theme } from '../../global-state';
+  import { theme } from '$lib/global-state';
 </script>
 
 <div class={`card shadow-sm p-5 mb-2 w-100 ${$theme.cardBgClass} ${$theme.textClass}`}>

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import AlertIcon from '$lib/components/icons/alert-icon.svelte';
-  import VerifiedIcon from '$lib/components/icons/verified-icon.svelte';
+  import AlertIcon from '$icons/alert-icon.svelte';
+  import VerifiedIcon from '$icons/verified-icon.svelte';
 
   export let message: string;
   export let type: string;

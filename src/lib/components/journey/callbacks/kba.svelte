@@ -2,10 +2,10 @@
   import type { KbaCreateCallback } from '@forgerock/javascript-sdk';
 
   import { theme } from '$lib/global-state';
-  import LockIcon from '$lib/components/icons/lock-icon.svelte';
+  import LockIcon from '$icons/lock-icon.svelte';
 
   export let callback: KbaCreateCallback;
-  export let inputName: string;
+  export let inputName = '';
 
   /** *************************************************************************
    * SDK INTEGRATION POINT

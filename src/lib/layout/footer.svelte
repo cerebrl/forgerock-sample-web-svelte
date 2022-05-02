@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { theme } from '../global-state';
+  import { theme } from '$lib/global-state';
 </script>
 
 <div class="cstm_container container-fluid">

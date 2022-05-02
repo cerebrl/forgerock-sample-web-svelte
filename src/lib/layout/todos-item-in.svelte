@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  import HomeIcon from '../components/icons/home-icon.svelte';
-  import TodosIcon from '../components/icons/todos-icon.svelte';
+  import HomeIcon from '$icons/home-icon.svelte';
+  import TodosIcon from '$icons/todos-icon.svelte';
 </script>
 
 <li

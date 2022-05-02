@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { PasswordCallback } from '@forgerock/javascript-sdk';
-  import EyeIcon from '$lib/components/icons/eye-icon.svelte';
+
+  import EyeIcon from '$icons/eye-icon.svelte';
   import { theme } from '$lib/global-state';
 
   export let callback: PasswordCallback;

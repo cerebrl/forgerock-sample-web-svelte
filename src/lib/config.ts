@@ -1,6 +1,6 @@
 import { Config } from '@forgerock/javascript-sdk';
 
-import { AM_URL, APP_URL, JOURNEY_LOGIN, REALM_PATH, WEB_OAUTH_CLIENT } from './constants';
+import { AM_URL, APP_URL, JOURNEY_LOGIN, REALM_PATH, WEB_OAUTH_CLIENT } from '$lib/constants';
 
 Config.set({
   clientId: WEB_OAUTH_CLIENT,

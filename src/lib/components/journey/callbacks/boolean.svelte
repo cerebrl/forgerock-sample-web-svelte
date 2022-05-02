@@ -2,7 +2,7 @@
   import type { AttributeInputCallback } from '@forgerock/javascript-sdk';
 
   export let callback: AttributeInputCallback<boolean>;
-  export let inputName: string;
+  export let inputName = '';
 
   /** *************************************************************************
    * SDK INTEGRATION POINT

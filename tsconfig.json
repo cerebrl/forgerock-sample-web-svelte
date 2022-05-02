@@ -8,6 +8,13 @@
 		"lib": ["es2020", "DOM"],
 		"moduleResolution": "node",
 		"module": "es2020",
+    "paths": {
+      "$icons/*": ["src/lib/components/icons/*"],
+      "$journey/*": ["src/lib/components/journey/*"],
+      "$lib/*": ["src/lib/*"],
+      "$todos/*": ["src/lib/components/todos/*"],
+      "$utilities/*": ["src/lib/components/utilities/*"]
+    },
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,

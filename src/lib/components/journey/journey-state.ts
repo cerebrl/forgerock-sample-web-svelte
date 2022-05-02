@@ -34,6 +34,7 @@ export async function initTree(tree: string) {
       console.error(`Get tokens | ${err}`);
       step.set(new FRLoginFailure({ message: err.message }));
       submittingForm.set(false);
+      return;
     }
 
     try {

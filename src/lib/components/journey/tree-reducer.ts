@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { JOURNEY_LOGIN, JOURNEY_REGISTER } from '../../constants';
+import { JOURNEY_LOGIN, JOURNEY_REGISTER } from '$lib/constants';
 
 export interface FormMetadata {
   action: string;

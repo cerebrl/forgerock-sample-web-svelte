@@ -1,9 +1,9 @@
 <script lang='ts'>
-  import BackHome from '../components/utilities/back-home.svelte';
-  import Card from '../components/utilities/card.svelte';
-  import Form from '../components/journey/form.svelte';
-  import { theme } from '../global-state';
-  import KeyIcon from '../components/icons/key-icon.svelte';
+  import BackHome from '$lib/components/utilities/back-home.svelte';
+  import Card from '$lib/components/utilities/card.svelte';
+  import Form from '$lib/components/journey/form.svelte';
+  import { theme } from '$lib/global-state';
+  import KeyIcon from '$lib/components/icons/key-icon.svelte';
 </script>
 
 <div class="cstm_container_v-centered container-fluid d-flex align-items-center">

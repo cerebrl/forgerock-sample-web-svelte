@@ -2,7 +2,7 @@
   import { theme } from '$lib/global-state';
   import apiRequest from '$lib/utilities/request';
 
-  import type { Todo } from './interface';
+  import type { Todo } from '$todos/interface';
 
   export let addTodo: (todo: Todo) => void;
   let creatingTodo = false;

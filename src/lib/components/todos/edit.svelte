@@ -1,6 +1,6 @@
 <script lang="ts">
   import { theme } from '$lib/global-state';
-  import type { Todo } from './interface';
+  import type { Todo } from '$todos/interface';
 
   export let editTodo: (obj: { _id: string; title: string }) => Promise<void>;
   export let setSelectedEditTodo: (todo: Todo) => void;

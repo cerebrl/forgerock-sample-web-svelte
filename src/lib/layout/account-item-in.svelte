@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { email, theme, username } from '../global-state';
-  import AccountIcon from '../components/icons/account-icon.svelte';
+  import { email, theme, username } from '$lib/global-state';
+  import AccountIcon from '$icons/account-icon.svelte';
 </script>
 
 <div class="d-flex align-items-center">

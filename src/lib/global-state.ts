@@ -1,4 +1,3 @@
-import { TokenStorage } from '@forgerock/javascript-sdk';
 import { writable } from 'svelte/store';
 import { browser } from '$app/env';
 
@@ -37,7 +36,7 @@ let storedUsername: string | null = '';
 
 if (browser) {
   /**
-   * Pull custom values from outside of the app to (re)hydrate state.
+   * Pull stored values from outside of the app to (re)hydrate state.
    */
   prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const storedAuthenticationString = window.sessionStorage.getItem('sdk_authentication');

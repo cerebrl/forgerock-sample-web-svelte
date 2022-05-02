@@ -21,7 +21,12 @@
 
   if (browser) {
     (async function fetchTodos() {
-      const fetchedTodos: TodoInterface[] = await apiRequest('todos');
+      let fetchedTodos: TodoInterface[] = [];
+      try {
+        fetchedTodos = await apiRequest('todos');
+      } catch (err) {
+        console.error(`Fetch todo request | ${err}`);
+      }
       hasFetched = true;
       todos.set([ ...$todos, ...fetchedTodos ]);
     })();
@@ -29,6 +34,9 @@
 
   $: {
     if (browser && !$isAuthenticated) {
+      /**
+       * If we detect user has lost authentication status, redirect to home
+      */
       goto('/');
     }
   }

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { theme } from '../../global-state';
-  import LeftArrowIcon from "$lib/components/icons/left-arrow-icon.svelte";
+  import { theme } from '$lib/global-state';
+  import LeftArrowIcon from "$icons/left-arrow-icon.svelte";
 
   const bootstrapClasses =
     'btn btn-sm text-bold text-decoration-none d-inline-block fs-6 my-2';

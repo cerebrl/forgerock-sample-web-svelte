@@ -3,7 +3,7 @@
   import type { ChoiceCallback } from '@forgerock/javascript-sdk';
 
   export let callback: ChoiceCallback;
-  export let inputName: string;
+  export let inputName = '';
 
   /** *************************************************************************
    * SDK INTEGRATION POINT

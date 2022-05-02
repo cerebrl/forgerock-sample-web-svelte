@@ -3,29 +3,30 @@
   import { goto } from '$app/navigation';
   import type { Writable } from 'svelte/store';
 
-  import Alert from '$lib/components/journey/alert.svelte';
-  import Boolean from './callbacks/boolean.svelte';
-  import Button from '$lib/components/journey/button.svelte';
-  import Choice from './callbacks/choice.svelte';
-  import CreatePassword from '$lib/components/journey/callbacks/create-password.svelte';
-  import CreateTextAttribute from '$lib/components/journey/callbacks/create-text-attribute.svelte';
-  import CreateUsername from '$lib/components/journey/callbacks/create-username.svelte';
+  import Alert from '$journey/alert.svelte';
+  import Boolean from '$journey/callbacks/boolean.svelte';
+  import Button from '$journey/button.svelte';
+  import Choice from '$journey/callbacks/choice.svelte';
+  import CreatePassword from '$journey/callbacks/create-password.svelte';
+  import CreateTextAttribute from '$journey/callbacks/create-text-attribute.svelte';
+  import CreateUsername from '$journey/callbacks/create-username.svelte';
   import { isAuthenticated, theme } from '$lib/global-state';
-  import { initTree, type StepTypes } from '$lib/components/journey/journey-state';
-  import Kba from './callbacks/kba.svelte';
-  import Loading from '$lib/components/utilities/loading.svelte';
-  import Password from '$lib/components/journey/callbacks/password.svelte';
+  import { initTree, type StepTypes } from '$journey/journey-state';
+  import Kba from '$journey/callbacks/kba.svelte';
+  import Loading from '$utilities/loading.svelte';
+  import Password from '$journey/callbacks/password.svelte';
   import TermsConditions from './callbacks/terms-conditions.svelte';
-  import Name from '$lib/components/journey/callbacks/name.svelte';
-  import treeReducer from '$lib/components/journey/tree-reducer';
-  import Unknown from '$lib/components/journey/callbacks/unknown.svelte';
+  import Name from '$journey/callbacks/name.svelte';
+  import treeReducer from '$journey/tree-reducer';
+  import Unknown from '$journey/callbacks/unknown.svelte';
+import { CallbackType } from '@forgerock/javascript-sdk';
 
   export let action = { type: '' };
 
   const form = treeReducer(action);
 
   let failureMessage: Writable<string | null>;
-  let getStep: (prevStep: StepTypes) => StepTypes;
+  let getStep: (prevStep?: StepTypes) => Promise<void>;
   let step: Writable<StepTypes>;
   let submittingForm: Writable<boolean>;
 
@@ -116,23 +117,23 @@
        */
     -->
     {#each $step.callbacks as callback}
-      {#if callback.getType() === 'BooleanAttributeInputCallback'}
+      {#if callback.getType() === CallbackType.BooleanAttributeInputCallback}
         <Boolean {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === 'ChoiceCallback'}
+      {:else if callback.getType() === CallbackType.ChoiceCallback}
         <Choice {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === 'KbaCreateCallback'}
+      {:else if callback.getType() === CallbackType.KbaCreateCallback}
         <Kba {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === 'NameCallback'}
+      {:else if callback.getType() === CallbackType.NameCallback}
         <Name {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === 'PasswordCallback'}
+      {:else if callback.getType() === CallbackType.PasswordCallback}
         <Password {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === 'StringAttributeInputCallback'}
+      {:else if callback.getType() === CallbackType.StringAttributeInputCallback}
         <CreateTextAttribute {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === 'ValidatedCreatePasswordCallback'}
+      {:else if callback.getType() === CallbackType.ValidatedCreatePasswordCallback}
         <CreatePassword {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === 'ValidatedCreateUsernameCallback'}
+      {:else if callback.getType() === CallbackType.ValidatedCreateUsernameCallback}
         <CreateUsername {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === 'TermsAndConditionsCallback'}
+      {:else if callback.getType() === CallbackType.TermsAndConditionsCallback}
         <TermsConditions {callback} inputName={callback?.payload?.input?.[0].name} />
       {:else}
         <Unknown {callback} />
@@ -143,5 +144,5 @@
   <slot name="bottomMessage" />
 {:else}
   <!-- Just in case things blow up. -->
-  <Alert message={$step.payload?.message} type="error" />
+  <Alert message={$step.payload?.message || ''} type="error" />
 {/if}

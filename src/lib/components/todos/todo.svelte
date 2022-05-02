@@ -1,9 +1,9 @@
 <script lang='ts'>
   import { theme } from '$lib/global-state';
-  import TodoIcon from '$lib/components/icons/todo-icon.svelte';
+  import TodoIcon from '$icons/todo-icon.svelte';
 
-  import ActionIcon from '$lib/components/icons/action-icon.svelte';
-  import type { Todo } from './interface';
+  import ActionIcon from '$icons/action-icon.svelte';
+  import type { Todo } from '$todos/interface';
 
   export let completeTodo: (_id: string, completed: boolean) => void;
   export let setSelectedDeleteTodo: (todo: Todo) => void;

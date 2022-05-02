@@ -24,7 +24,7 @@
            ***************************************************************** */
           await UserManager.getCurrentUser();
         } catch (err) {
-          console.info(`Info: route validation; ${err}`);
+          console.info(`Route validation | ${err}`);
 
           isAuthenticated.set(false);
           goto('/');

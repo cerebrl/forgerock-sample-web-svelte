@@ -153,6 +153,14 @@
        */
     -->
     {#each $step.callbacks as callback}
+      <!--
+        /**
+         * Using @const to save off the inputName for easier readability.
+         * Then, using the dynamic svelte component syntax to pull logic out of the
+         * template and into the JS above for assigning the right component to the
+         * callback.
+         */
+       -->
       {@const inputName = callback?.payload?.input?.[0].name}
       <svelte:component this={mapCallbackToComponent(callback)} {callback} {inputName} />
     {/each}

@@ -7,7 +7,7 @@ export default function initConfig(url: any) {
   console.log(url);
   Config.set({
     clientId: WEB_OAUTH_CLIENT,
-    redirectUri: `https://${url.host}/callback`,
+    redirectUri: `${url.origin}/callback`,
     scope: 'openid profile email',
     serverConfig: {
       baseUrl: AM_URL,

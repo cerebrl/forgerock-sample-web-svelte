@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Sign In | ForgeRock: A Sample React (Web) Todo App</title>
+	<title>Sign In | ForgeRock: A Sample SvelteKit (Web) Todo App</title>
 	<meta name="description" content="Svelte todo sample app" />
 </svelte:head>
 

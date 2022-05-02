@@ -41,7 +41,7 @@
 </script>
 
 <svelte:head>
-	<title>Todos | ForgeRock: A Sample React (Web) Todo App</title>
+	<title>Todos | ForgeRock: A Sample SvelteKit (Web) Todo App</title>
 	<meta name="description" content="Svelte todo sample app" />
 </svelte:head>
 

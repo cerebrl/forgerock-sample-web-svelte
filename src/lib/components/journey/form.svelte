@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { CallbackType } from '@forgerock/javascript-sdk';
   import { browser } from '$app/env';
   import { goto } from '$app/navigation';
   import type { Writable } from 'svelte/store';
@@ -19,7 +20,6 @@
   import Name from '$journey/callbacks/name.svelte';
   import treeReducer from '$journey/tree-reducer';
   import Unknown from '$journey/callbacks/unknown.svelte';
-import { CallbackType } from '@forgerock/javascript-sdk';
 
   export let action = { type: '' };
 
@@ -30,11 +30,48 @@ import { CallbackType } from '@forgerock/javascript-sdk';
   let step: Writable<StepTypes>;
   let submittingForm: Writable<boolean>;
 
+  /**
+   * Iterate through callbacks received from AM and map the callback to the
+   * appropriate callback component, pushing that component
+   * the StepComponent's array.
+   */
+  function mapCallbackToComponent(cb: any) {
+    /** *********************************************************************
+     * SDK INTEGRATION POINT
+     * Summary:SDK callback method for getting the callback type
+     * ----------------------------------------------------------------------
+     * Details: This method is helpful in quickly identifying the callback
+     * when iterating through an unknown list of AM callbacks
+     ********************************************************************* */
+    switch (cb.getType()) {
+      case CallbackType.BooleanAttributeInputCallback:
+        return Boolean;
+      case CallbackType.ChoiceCallback:
+        return Choice;
+      case CallbackType.KbaCreateCallback:
+        return Kba;
+      case CallbackType.NameCallback:
+        return Name;
+      case CallbackType.PasswordCallback:
+        return Password;
+      case CallbackType.StringAttributeInputCallback:
+        return CreateTextAttribute;
+      case CallbackType.ValidatedCreatePasswordCallback:
+        return CreatePassword;
+      case CallbackType.ValidatedCreateUsernameCallback:
+        return CreateUsername;
+      case CallbackType.TermsAndConditionsCallback:
+        return TermsConditions;
+      default:
+        return Unknown;
+    }
+  }
+
   if (browser) {
     /**
      * @function callToInitializeTree - Initializes tree and makes first request
      * @returns {Promise<Object>} - Object with Svelte stores and method for continuation
-    */
+     */
     (async function callToInitializeTree() {
       let initObj = await initTree(form.tree);
 
@@ -48,7 +85,7 @@ import { CallbackType } from '@forgerock/javascript-sdk';
   $: {
     /**
      * Detect when user completes authentication and redirect to home
-    */
+     */
     if ($isAuthenticated) {
       console.log('Form component recognises the user as authenticated');
       step.set(null);
@@ -57,7 +94,6 @@ import { CallbackType } from '@forgerock/javascript-sdk';
     }
   }
 </script>
-
 
 <!--
   /**
@@ -117,27 +153,8 @@ import { CallbackType } from '@forgerock/javascript-sdk';
        */
     -->
     {#each $step.callbacks as callback}
-      {#if callback.getType() === CallbackType.BooleanAttributeInputCallback}
-        <Boolean {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === CallbackType.ChoiceCallback}
-        <Choice {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === CallbackType.KbaCreateCallback}
-        <Kba {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === CallbackType.NameCallback}
-        <Name {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === CallbackType.PasswordCallback}
-        <Password {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === CallbackType.StringAttributeInputCallback}
-        <CreateTextAttribute {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === CallbackType.ValidatedCreatePasswordCallback}
-        <CreatePassword {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === CallbackType.ValidatedCreateUsernameCallback}
-        <CreateUsername {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else if callback.getType() === CallbackType.TermsAndConditionsCallback}
-        <TermsConditions {callback} inputName={callback?.payload?.input?.[0].name} />
-      {:else}
-        <Unknown {callback} />
-      {/if}
+      {@const inputName = callback?.payload?.input?.[0].name}
+      <svelte:component this={mapCallbackToComponent(callback)} {callback} {inputName} />
     {/each}
     <Button buttonText={form.buttonText} submittingForm={$submittingForm} />
   </form>

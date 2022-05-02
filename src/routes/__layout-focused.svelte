@@ -1,12 +1,7 @@
 <script lang="ts">
-  import { browser } from '$app/env';
-
   import '$lib/config';
+  import '$lib/global-state';
   import '../app.scss';
-
-  if (browser) {
-    document.body.classList.add('cstm_bg-dark', 'bg-dark');
-  }
 </script>
 
 <slot />

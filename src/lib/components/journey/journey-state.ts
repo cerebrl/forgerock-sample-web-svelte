@@ -22,24 +22,32 @@ interface User {
 }
 export type StepTypes = FRStep | FRLoginSuccess | FRLoginFailure | null;
 
-async function getOAuth() {
-  try {
-    await TokenManager.getTokens({ forceRenew: true });
-  } catch (err) {
-    console.info(`Error: get tokens; ${err}`);
-    return;
+export async function initTree(tree: string) {
+  const step: Writable<StepTypes> = writable(null);
+  const failureMessage: Writable<string | null> = writable(null);
+  const submittingForm: Writable<boolean> = writable(false);
+
+  async function getOAuth() {
+    try {
+      await TokenManager.getTokens({ forceRenew: true });
+    } catch (err: any) {
+      console.error(`Get tokens | ${err}`);
+      step.set(new FRLoginFailure({ message: err.message }));
+      submittingForm.set(false);
+    }
+
+    try {
+      const user = (await UserManager.getCurrentUser()) as User;
+      email.set(user.email);
+      isAuthenticated.set(true);
+      username.set(user.name);
+    } catch (err: any) {
+      console.error(`Get current user | ${err}`);
+      step.set(new FRLoginFailure({ message: err.message }));
+      submittingForm.set(false);
+    }
   }
 
-  try {
-    const user = (await UserManager.getCurrentUser()) as User;
-    email.set(user.email);
-    isAuthenticated.set(true);
-    username.set(user.name);
-  } catch (err) {
-    console.error(`Error: get current user; ${err}`);
-  }
-}
-export async function initTree(tree: string) {
   async function getStep(prevStep: StepTypes = null) {
     /**
      * Save previous step information just in case we have a total
@@ -49,8 +57,8 @@ export async function initTree(tree: string) {
     let previousStage;
 
     if (prevStep && prevStep.type === StepType.Step) {
-    previousStage = prevStep?.getStage && prevStep.getStage();
-    previousCallbacks = prevStep?.callbacks;
+      previousStage = prevStep?.getStage && prevStep.getStage();
+      previousCallbacks = prevStep?.callbacks;
     }
     const previousPayload = prevStep?.payload;
     let nextStep: StepTypes;
@@ -60,9 +68,9 @@ export async function initTree(tree: string) {
       /**
        * Initial attempt to retrieve next step
        */
-      nextStep = await FRAuth.next(get(step as Writable<FRStep>), { tree});
+      nextStep = await FRAuth.next(get(step as Writable<FRStep>), { tree });
     } catch (err) {
-      console.error(`Error: failure in next step request; ${err}`);
+      console.error(`Next step request | ${err}`);
 
       /**
        * Setup an object to display failure message
@@ -77,6 +85,7 @@ export async function initTree(tree: string) {
       submittingForm.set(false);
     } else if (nextStep.type === StepType.LoginSuccess) {
       // User is authenticated, now call for OAuth tokens
+      console.log('Calling OAuth flow.');
       getOAuth();
       step.set(nextStep);
       submittingForm.set(false);
@@ -93,7 +102,7 @@ export async function initTree(tree: string) {
          */
         restartStep = await FRAuth.next(undefined, { tree });
       } catch (err) {
-        console.error(`Error: failure in new step request; ${err}`);
+        console.error(`Restart failed step request | ${err}`);
 
         /**
          * Setup an object to display failure message
@@ -126,29 +135,10 @@ export async function initTree(tree: string) {
       submittingForm.set(false);
     }
   }
-
-  const step: Writable<StepTypes> = writable(null);
-  const failureMessage: Writable<string | null> = writable(null);
-  const submittingForm: Writable<boolean> = writable(false);
-  let initialStep: StepTypes;
-
-  try {
-    /**
-     * Start tree and get first step
-     */
-    initialStep = await FRAuth.next(undefined, { tree});
-  } catch (err) {
-    console.error(`Error: tree failed to initialize; ${err}`);
-
-    /**
-     * Setup an object to display failure message
-     */
-    initialStep = new FRLoginFailure({
-      message: 'Unknown request failure'
-    });
-  }
-
-  step.set(initialStep);
+  /**
+   * Start tree and get first step
+   */
+  getStep();
 
   return {
     step,

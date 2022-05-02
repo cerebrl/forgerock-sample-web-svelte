@@ -85,7 +85,7 @@
     * user while we complete the process and redirect to home page.
     */
   -->
-  <Loading message="Success! Redirecting ..." />
+  <Loading message="Login success! Requesting tokens ..." />
 {:else if $step.type === 'Step'}
   <!--
     /**

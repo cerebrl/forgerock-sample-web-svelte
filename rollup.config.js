@@ -2,7 +2,10 @@ import alias from '@rollup/plugin-alias';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import svelte from 'rollup-plugin-svelte';
+import path from 'path';
 import preprocess from 'svelte-preprocess';
+
+const projectRootDir = path.resolve(__dirname);
 
 export default {
   input: 'src/lib/main.ts',
@@ -15,17 +18,37 @@ export default {
   },
   plugins: [
     // Aliases to help Rollup find the paths declared in tsconfig.json
-    // Unfortunately, this breaks the importing of svelte files
+    // Unfortunately, the simple syntax for entries does not work, the
+    // full path.resolve() syntax is required.
+    // Ref: https://github.com/rollup/plugins/tree/master/packages/alias#custom-resolvers
     alias({
-      entries: {
-        $icons: 'src/lib/components/icons',
-        $journey: 'src/lib/components/journey',
-        $lib: 'src/lib',
-        $todos: 'src/lib/components/todos',
-        $utilities: 'src/lib/components/utilities'
-      }
+      entries: [
+        {
+          find: '$icons',
+          replacement: path.resolve(projectRootDir, 'src/lib/components/icons')
+        },
+        {
+          find: '$journey',
+          replacement: path.resolve(projectRootDir, 'src/lib/components/journey')
+        },
+        {
+          find: '$lib',
+          replacement: path.resolve(projectRootDir, 'src/lib')
+        },
+        {
+          find: '$todos',
+          replacement: path.resolve(projectRootDir, 'src/lib/components/todos')
+        },
+        {
+          find: '$utilities',
+          replacement: path.resolve(projectRootDir, 'src/lib/components/utilities')
+        }
+      ]
     }),
-    resolve({ browser: true }),
+    resolve({
+      browser: true,
+      resolveOnly: module => module.length === 0 || module.includes('src')
+    }),
     svelte({
       // By default, all ".svelte" files are compiled
       // extensions: ['.my-custom-extension'],
@@ -75,6 +98,7 @@ export default {
       }
     }),
     typescript()
+
     // ...
   ]
 };
